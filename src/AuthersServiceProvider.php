@@ -4,7 +4,7 @@ namespace Kigamekun\AuthApi;
 
 use Illuminate\Support\ServiceProvider;
 
-class AuthersServiceProviders extends ServiceProvider
+class AuthersServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
