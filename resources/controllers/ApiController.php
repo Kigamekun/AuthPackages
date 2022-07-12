@@ -22,6 +22,20 @@ class ApiController extends Controller
 
             case 'GET':
                 $data = DB::table('poll')->get();
+                $data->transform(function($transform){
+                    $ch = json_decode($transform->choices);
+                    $all = DB::table('vote')->where(['poll_id'=>$transform->id])->count();
+                    $result = [];
+                    foreach ($ch as $key => $value) {
+                        $res = DB::table('vote')->where(['poll_id'=>$transform->id,'choices_id'=>$key])->count();
+                        $result[$key] = $res/$all * 100;
+                    }
+
+                    $transform->result = json_encode($result);
+
+                    return $transform;
+                });
+
                 return response()->json(['data'=>$data], 200);
                 break;
 
@@ -44,14 +58,20 @@ class ApiController extends Controller
 
     public function vote(Request $request,$id,$choices_id)
     {
-        DB::table('vote')->insert([
-            'poll_id'=>$id,
-            'choices_id'=>$choices_id
-        ]);
 
-        $data = DB::table('poll')->where('id',$id)->first();
-        $data = json_decode($data->choices,TRUE);
+        if (is_null(DB::table('vote')->where('user_id',$request->user_id)->first())) {
+            DB::table('vote')->insert([
+                'poll_id'=>$id,
+                'choices_id'=>$choices_id,
+                'user_id'=>$request->user_id
+            ]);
 
-        return response()->json(['message'=>'data berhasil ditambahkan','status'=>'success','data'=>$data[$choices_id]], 200);
+            $data = DB::table('poll')->where('id',$id)->first();
+            $data = json_decode($data->choices,TRUE);
+
+            return response()->json(['statusCode'=>200,'message'=>'data berhasil ditambahkan','status'=>'success','data'=>$data[$choices_id]], 200);
+        }else {
+            return response()->json(['statusCode'=>400,'message'=>'anda telah melakukan vooting untuk poll ini','status'=>'error'], 400);
+        }
     }
 }

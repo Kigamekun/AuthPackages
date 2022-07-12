@@ -63,7 +63,7 @@ function Register() {
 
 const renderForm = (
     <section className="area-login">
-        <h1>Register YukPilih</h1>
+        <h1 className="login-text">Register YukPilih</h1>
         <div className="login">
         <div>
         </div>

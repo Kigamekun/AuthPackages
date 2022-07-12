@@ -97,7 +97,7 @@ const renderForm = (
     // </form>
     // </div>
 	<section className="area-login">
-        <h1>Login YukPilih</h1>
+        <h1 className="login-text">Login YukPilih</h1>
         <div className="login">
     	<div>
         </div>
