@@ -1,0 +1,24 @@
+{
+    "name": "kigamekun/auth-api",
+    "description": "Auth API Packages",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kigamekun",
+            "email": "reksa.prayoga1012@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Kigamekun\\AuthApi\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kigamekun\\AuthApi\\AuthersServiceProvider"
+            ]
+        }
+    }
+}
